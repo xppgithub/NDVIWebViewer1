@@ -1,0 +1,397 @@
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>NDVI Viewer - Baix Llobregat Nature Reserves - 1985/2020</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+   
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
+    <link href='css\estilNDVI1.css' rel='stylesheet' />
+ 
+    <script>
+
+        var map;
+
+        function Init() 
+        
+        {
+    
+            mapboxgl.accessToken = '';
+            map = new mapboxgl.Map({
+                container: 'map',
+                style: 'https://tilemaps.icgc.cat/tileserver/styles/terrain.json',
+                center: [1.95, 41.43],
+                zoom: 10.2,
+                hash: true,
+                pitch: 0,
+                attributionControl: false
+            });
+            map.addControl(new mapboxgl.AttributionControl({
+                compact: true
+            }));
+            map.addControl(new mapboxgl.NavigationControl());
+
+            map.on('load', function () {
+
+
+                map.addSource("PEIN_CLR_BaiLlo_pol", {
+                    type: "geojson",
+                    data: "datos/PEIN_CLR_BaiLlo_pol.geojson"
+                });
+
+                map.addSource("PEIN_GRF_BaiLlo_pol", {
+                    type: "geojson",
+                    data: "datos/PEIN_GRF_BaiLlo_pol.geojson"
+                });
+
+                map.addSource("PEIN_MTS_BaiLlo_pol", {
+                    type: "geojson",
+                    data: "datos/PEIN_MTS_BaiLlo_pol.geojson"
+                });
+
+                map.addSource("PEIN_ORD_BaiLlo_pol", {
+                    type: "geojson",
+                    data: "datos/PEIN_ORD_BaiLlo_pol.geojson"
+                });
+
+                map.addLayer({
+                    id: "PEIN_CLR_BaiLlo_pol-linelayer",
+                    type: "line",
+                    source: "PEIN_CLR_BaiLlo_pol",
+                    paint: {
+                        "line-width": 2,
+                        "line-color":"black",
+                }
+            });
+
+                map.addLayer({
+                    id: "PEIN_GRF_BaiLlo_pol-linelayer",
+                    type: "line",
+                    source: "PEIN_GRF_BaiLlo_pol",
+                    paint: {
+                        "line-width": 2,
+                        "line-color":"black",
+                }
+            });
+
+                map.addLayer({
+                    id: "PEIN_MTS_BaiLlo_pol-linelayer",
+                    type: "line",
+                    source: "PEIN_MTS_BaiLlo_pol",
+                    paint: {
+                        "line-width": 2,
+                        "line-color":"black",
+                }
+            }); 
+            
+                map.addLayer({
+                    id: "PEIN_ORD_BaiLlo_pol-linelayer",
+                    type: "line",
+                    source: "PEIN_ORD_BaiLlo_pol",
+                    paint: {
+                        "line-width": 2,
+                        "line-color":"black",
+                }
+            });            
+
+                map.addLayer({
+                    id: "PEIN_CLR_BaiLlo_pol-filllayer",
+                    type: "fill",
+                    source: "PEIN_CLR_BaiLlo_pol",
+                    paint: {
+                        "fill-opacity":0.5,
+                        "fill-color":"yellow",
+                    }                                
+            });
+
+                map.addLayer({
+                    id: "PEIN_GRF_BaiLlo_pol-filllayer",
+                    type: "fill",
+                    source: "PEIN_GRF_BaiLlo_pol",
+                    paint: {
+                        "fill-opacity":0.5,
+                        "fill-color":"red",
+                    }                                
+            });
+
+                map.addLayer({
+                    id: "PEIN_MTS_BaiLlo_pol-filllayer",
+                    type: "fill",
+                    source: "PEIN_MTS_BaiLlo_pol",
+                    paint: {
+                        "fill-opacity":0.5,
+                        "fill-color":"blue",
+                    }                                
+            });
+
+                map.addLayer({
+                    id: "PEIN_ORD_BaiLlo_pol-filllayer",
+                    type: "fill",
+                    source: "PEIN_ORD_BaiLlo_pol",
+                    paint: {
+                        "fill-opacity":0.5,
+                        "fill-color":"blueviolet",
+                    }                                
+            });
+          
+        })
+
+    map.on  ("load", function () {
+
+        var popupPEINCLR = new mapboxgl.Popup({
+            closeButton: false,
+        closeOnClick: false});
+
+        map.on('mouseenter', "PEIN_CLR_BaiLlo_pol-filllayer", function (e) {
+  
+  var text = "";
+  
+    for (key in e.features[0].properties) {
+
+        if (key == 'NOM_PEIN') {
+
+text += "<div class='natareaname'=>"+e.features[0].properties[key]+"</div>"+'<div class="clickhere_text">CLICK on the<strong> TREE ICON </strong>for more details...</div>'+'<br>'
+}
+
+  };
+
+popupPEINCLR.setLngLat(e.lngLat).setHTML(text).addTo(map);
+  
+    map.on('mouseleave', 'PEIN_CLR_BaiLlo_pol-filllayer', function () {
+map.getCanvas().style.cursor = '';
+popupPEINCLR.remove();
+
+});
+
+map.on('mouseenter', "PEIN_CLR_BaiLlo_pol-filllayer", function () {
+  map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', "PEIN_CLR_BaiLlo_pol-filllayer", function () {
+  map.getCanvas().style.cursor = '';
+});
+
+});
+
+        var popupPEINGRF = new mapboxgl.Popup({
+            closeButton: false,
+        closeOnClick: false});
+
+        map.on('mouseenter', "PEIN_GRF_BaiLlo_pol-filllayer", function (e) {
+  
+  var text = "";
+  
+    for (key in e.features[0].properties) {
+
+        if (key == 'NOM_PEIN') {
+
+text += "<div class='natareaname'=>"+e.features[0].properties[key]+"</div>"+'<div class="clickhere_text">CLICK on the<strong> TREE ICON </strong>for more details...</div>'+'<br>'
+}
+
+  };
+
+popupPEINGRF.setLngLat(e.lngLat).setHTML(text).addTo(map);
+  
+    map.on('mouseleave', 'PEIN_GRF_BaiLlo_pol-filllayer', function () {
+map.getCanvas().style.cursor = '';
+popupPEINGRF.remove();
+
+});
+
+map.on('mouseenter', "PEIN_GRF_BaiLlo_pol-filllayer", function () {
+  map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', "PEIN_GRF_BaiLlo_pol-filllayer", function () {
+  map.getCanvas().style.cursor = '';
+});
+
+});
+
+        var popupPEINMTS = new mapboxgl.Popup({
+            closeButton: false,
+        closeOnClick: false});
+
+        map.on('mouseenter', "PEIN_MTS_BaiLlo_pol-filllayer", function (e) {
+  
+  var text = "";
+  
+    for (key in e.features[0].properties) {
+
+        if (key == 'NOM_PEIN') {
+
+text += "<div class='natareaname'=>"+e.features[0].properties[key]+"</div>"+'<div class="clickhere_text">CLICK on the<strong> TREE ICON </strong>for more details...</div>'+'<br>'
+}
+
+  };
+
+popupPEINMTS.setLngLat(e.lngLat).setHTML(text).addTo(map);
+  
+    map.on('mouseleave', 'PEIN_MTS_BaiLlo_pol-filllayer', function () {
+map.getCanvas().style.cursor = '';
+popupPEINMTS.remove();
+
+});
+
+map.on('mouseenter', "PEIN_MTS_BaiLlo_pol-filllayer", function () {
+  map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', "PEIN_MTS_BaiLlo_pol-filllayer", function () {
+  map.getCanvas().style.cursor = '';
+});
+
+});
+
+
+    var popupPEINORD = new mapboxgl.Popup({
+            closeButton: false,
+        closeOnClick: false});
+
+        map.on('mouseenter', "PEIN_ORD_BaiLlo_pol-filllayer", function (e) {
+  
+  var text = "";
+  
+    for (key in e.features[0].properties) {
+
+        if (key == 'NOM_PEIN') {
+
+text += "<div class='natareaname'=>"+e.features[0].properties[key]+"</div>"+'<div class="clickhere_text">CLICK on the<strong> TREE ICON </strong>for more details...</div>'+'<br>'
+}
+
+  };
+
+popupPEINORD.setLngLat(e.lngLat).setHTML(text).addTo(map);
+  
+    map.on('mouseleave', 'PEIN_ORD_BaiLlo_pol-filllayer', function () {
+map.getCanvas().style.cursor = '';
+popupPEINORD.remove();
+
+});
+
+map.on('mouseenter', "PEIN_ORD_BaiLlo_pol-filllayer", function () {
+  map.getCanvas().style.cursor = 'pointer';
+});
+
+map.on('mouseleave', "PEIN_ORD_BaiLlo_pol-filllayer", function () {
+  map.getCanvas().style.cursor = '';
+});
+
+});
+
+            
+    })
+
+    map.on  ("load", function () {
+
+        map.addSource("PEIN_BaiLlo-popups", {
+            type: "geojson",
+            data:   {
+                type: "FeatureCollection",
+                
+                    features:   [
+                    {
+                        type: "Feature",
+                        properties:     {
+                            description:'<div class="NDVI1_link"><a href="images/CLR.webm" target="_blank" title="Opens in a new window">Serra de Collserola<br> NDVI 1985/2020 - Click here</a></div>'
+                                    },
+                        geometry:   {
+                            type: 'Point',
+                            coordinates: [2.048301, 41.418525]
+                                }
+                    },
+                    
+                    {
+                        type: "Feature",
+                        properties: {
+                            description:'<div class="NDVI1_link"><a href="images/GRF.webm" target="_blank" title="Opens in a new window">Massís del Garraf<br> NDVI 1985/2020 - Click here</a></div>'
+                                },
+                        geometry:   {
+                            type: 'Point',
+                            coordinates: [1.906296, 41.30699 ]
+                                }                  
+                    },
+
+                    {
+                        type: "Feature",
+                        properties: {
+                            description:'<div class="NDVI1_link"><a href="images/MTS.webm" target="_blank" title="Opens in a new window">Montserrat<br> NDVI 1985/2020 - Click here</a></div>'
+                                },
+                        geometry:   {
+                            type: 'Point',
+                            coordinates: [1.857779, 41.574626]
+                                }                  
+                    },
+
+                    {
+                        type: "Feature",
+                        properties: {
+                            description:'<div class="NDVI1_link"><a href="images/ORD.webm" target="_blank" title="Opens in a new window">Muntanyes de l´Ordal<br> NDVI 1985/2020 - Click here</a></div>'
+                                },
+                        geometry:   {
+                            type: 'Point',
+                            coordinates: [1.926385, 41.382151]
+                                }                  
+                    },
+                  
+                                ]
+                        }
+                                            }
+                        );
+     
+        map.loadImage(src='images/tree1.png', function(error, image) {
+        if (error) throw error;
+        if (!map.hasImage('tree')) map.addImage('tree', image);
+        });
+        
+            map.addLayer({
+            'id': 'PEIN_Icon',
+            'type': 'symbol',
+            'source': 'PEIN_BaiLlo-popups',
+            'layout':{
+                'icon-image':'tree',
+                'icon-size':0.15},
+        })
+
+        map.on      ('click', 'PEIN_Icon', function (e) {
+            var coordinates = e.features[0].geometry.coordinates.slice();
+            var description = e.features[0].properties.description;
+ 
+
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180)   {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+                                                                }
+ 
+        new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(description)
+            .addTo(map);
+                                                                }
+                    );
+
+        map.on  ('mouseenter', 'PEIN_Icon', function () {
+        map.getCanvas().style.cursor = 'pointer';
+                                                            }
+                );
+ 
+        map.on  ('mouseleave', 'PEIN_Icon', function () {
+        map.getCanvas().style.cursor = '';
+                                                            }
+                );
+
+                                }
+            )
+
+        }
+
+    </script>
+</head>
+<body onload="Init()">
+    <div id='map'>
+        <div class="títol1">
+            <p>NDVI 1985/2020</p>
+            <p>Baix Llobregat Region 
+            <p>Nature Reserves</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  #map {
+    height: 100%;
+    width: 100%;
+  }
+.títol1 {position: absolute; top: 50px; right: 100px; font-size: 40px; width: auto; padding:10px; opacity: 80%; background-color:lightgreen; z-index: 10;
+  border-radius: 20px;text-align: center; border: solid 4px black;font-family: Georgia, 'Times New Roman', Times, serif;}
+
+.natareaname {text-align: center; font-size: 20px;font-weight: bolder;background-color: lightgreen;padding: 10px}
+
+.clickhere_text {text-align: center; font-size: 20px;font-weight: normal; padding-top: 20px} 
+
+.NDVI1_link {text-align: center; font-size: 12px; width: fit-content;border: dashed 2px black; padding: 6px;font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: bolder; border-radius: 10px; }
+
+
+  
